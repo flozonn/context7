@@ -1,0 +1,116 @@
+---
+title: Kiro
+description: Using Context7 with Kiro
+---
+
+Context7 integrates with [Kiro](https://kiro.dev) to provide current library documentation instead of relying on training data. Get accurate, up-to-date code examples directly in your coding sessions.
+
+## Installation
+
+### One-Click Install
+
+The fastest way to get started is the one-click install. [Install Context7 in Kiro](kiro://kiro.mcp/add?name=context7&config=%7B%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40upstash%2Fcontext7-mcp%22%5D%2C%22disabled%22%3Afalse%2C%22autoApprove%22%3A%5B%5D%7D) or visit the [Kiro MCP Server Catalog](https://kiro.dev/docs/mcp/servers/) and click **+ Add to Kiro** for Context7.
+
+### Manual Configuration
+
+Add the Context7 MCP server to your Kiro config file. Kiro supports two configuration levels:
+
+- **Workspace**: `.kiro/settings/mcp.json` in your project
+- **Global**: `~/.kiro/settings/mcp.json` for all projects
+
+See [Kiro MCP documentation](https://kiro.dev/docs/mcp/configuration/) for more details.
+
+#### Remote Server Connection
+
+```json
+{
+  "mcpServers": {
+    "context7": {
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+#### Local Server Connection
+
+```json
+{
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp", "--api-key", "YOUR_API_KEY"]
+    }
+  }
+}
+```
+
+For all MCP client configurations, see [All MCP Clients](/resources/all-clients).
+
+---
+
+## Using Context7
+
+Add "use context7" to your prompts to fetch current documentation:
+
+```
+use context7 to show me how to set up middleware in Next.js 15
+use context7 for Prisma query examples with relations
+use context7 for the Supabase syntax for row-level security
+```
+
+If you know the library ID, use it directly to skip resolution:
+
+```
+use context7 with /supabase/supabase for authentication docs
+use context7 with /vercel/next.js for app router setup
+```
+
+You can also add instructions to your Kiro steering files (`.kiro/steering/*.md`) to automatically use Context7 when asking about libraries.
+
+---
+
+## Tips
+
+<AccordionGroup>
+<Accordion title="Workspace vs Global Config">
+Use **global config** (`~/.kiro/settings/mcp.json`) when:
+- You want Context7 available in all projects
+- You're using a personal API key
+
+Use **workspace config** (`.kiro/settings/mcp.json`) when:
+- The project has specific Context7 requirements
+- You want to share the setup with teammates
+- Different projects need different API keys
+</Accordion>
+
+<Accordion title="Getting Better Results">
+- Be specific about what you're trying to do, not just which library
+- Mention versions when they matter
+- If the first result isn't right, ask for a different part of the docs
+
+```
+# Good
+How do I handle file uploads with the Supabase Storage API?
+
+# Less specific
+How does Supabase storage work?
+```
+</Accordion>
+
+<Accordion title="Using with Kiro Steering">
+You can create a steering file to automatically trigger Context7 lookups. Add a file at `.kiro/steering/context7.md`:
+
+```markdown
+When the user asks about library documentation, API references,
+or needs code examples from external packages, use Context7 MCP
+to fetch current documentation. Don't rely on training data for
+library-specific code.
+```
+
+This makes Context7 part of your project's standard workflow.
+</Accordion>
+</AccordionGroup>

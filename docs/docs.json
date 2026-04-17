@@ -85,6 +85,7 @@
         "pages": [
           "clients/claude-code",
           "clients/cursor",
+          "clients/kiro",
           "clients/opencode",
           "resources/all-clients"
         ]
